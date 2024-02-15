@@ -1,10 +1,14 @@
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
+from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.settings import api_settings  
 import django
 
 class CreateUserView(APIView):
@@ -30,28 +34,38 @@ class LoginView(APIView):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            refresh = RefreshToken.for_user(user)  # Generate JWT tokens
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token)
+            }, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        logout(request)
-        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+        except KeyError:  # In case 'refresh' key is missing in request data
+            return Response({'error': 'Refresh token is missing'}, status=status.HTTP_400_BAD_REQUEST)
+        except TokenError:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class IsAuthenticatedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        if request.user.is_authenticated:  
-            data = {
-                'isAuthenticated': True,
-                'username': request.user.username
-            }
-            return Response(data, status=status.HTTP_200_OK)
-        else:
-            return Response({'isAuthenticated': False}, status=status.HTTP_401_UNAUTHORIZED)
+        data = {
+            'isAuthenticated': True,
+            'username': request.user.username
+        }
+        return Response(data, status=status.HTTP_200_OK)

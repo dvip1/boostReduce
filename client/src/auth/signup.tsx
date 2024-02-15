@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
+import config from '../config.json'
 const SignUp = () => 
 {
   const [userData, setUserData] = useState({
@@ -9,7 +10,7 @@ const SignUp = () =>
   });
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-
+  const serverUrl:string= config.serverUrl + "/auth/register/"
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
@@ -17,14 +18,14 @@ const SignUp = () =>
         formData.append('email', userData.email);
         formData.append('password', userData.password);
         const response = await axios.post(
-            "http://localhost:8000/register/",
+            serverUrl,
             formData, 
             { withCredentials: true } 
           );
       if (response.status === 201) {
         // Check response.data directly
         console.log("User created");
-        navigate("/dashboard");
+        navigate("/login");
       }
       console.log(response);
     } catch (error: any) {

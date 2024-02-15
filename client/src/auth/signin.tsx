@@ -2,35 +2,32 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie'; 
 import axios from "axios"; 
+import config from '../config.json'
+
 const SignIn = () => {
-  const csrftoken = Cookies.get('csrftoken'); 
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-
+  const serverUrl:string = config.serverUrl + "/auth/login/"; 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
-        const formData = new FormData(); // Create a FormData object
-        formData.append('email', userData.email);
-        formData.append('password', userData.password);
         const response = await axios.post(
-            "http://localhost:8000/login/",
-            formData, 
+            serverUrl,
+            userData, 
             { 
               withCredentials: true,
-              headers: { 'X-CSRFToken': csrftoken } 
             } 
           );
-      if (response.status === 201) {
-        // Check response.data directly
-        console.log("User created");
+      if (response.status === 200) {
+        // Store the tokens in a secure place (like an HttpOnly cookie)
+        Cookies.set('refreshToken', response.data.refresh, { httpOnly: true });
+        Cookies.set('accessToken', response.data.access);
         navigate("/dashboard");
       }
-      console.log(response);
     } catch (error: any) {
         if (error.response) {
           if (error.response.status === 409) {  // Conflict (e.g., username exists)

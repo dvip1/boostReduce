@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',  
+    'rest_framework_simplejwt',
+
 ]
 
 MIDDLEWARE = [
@@ -60,6 +63,14 @@ CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access the CSRF cookie
 
 ROOT_URLCONF = 'server.urls'
 
+ASGI_APPLICATION = "BoostReduce.asgi.application"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -77,6 +88,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
+ASGI_APPLICATION = 'server.wsgi.application'
 
 
 # Database
