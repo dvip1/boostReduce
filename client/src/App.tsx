@@ -7,6 +7,7 @@ import SignIn from "./auth/signin";
 import IsAuth from "./auth/isAuth";
 import SignOut from "./auth/signout";
 import ProtectedRoute from "./auth/protectedRoute";
+import WebSocketComponent from "./socket/socket";
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/sign_out" element={<SignOut />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/ws" element={<WebSocketComponent />} />
         </Route>
       </Routes>
     </BrowserRouter>

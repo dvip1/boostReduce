@@ -1,6 +1,5 @@
-import config from '../config.json'
 import { useEffect, useRef } from 'react';
-const serverUrl = config.serverUrl + "ws/simple";
+const serverUrl = "ws://localhost:8000/ws/simple/";
 
 export default function WebSocketComponent(){
     const socketRef = useRef<WebSocket | null>(null);
@@ -17,12 +16,12 @@ export default function WebSocketComponent(){
         socketRef.current.onerror = (error) =>{
             console.log("WebSocket error: ", error);
         }
-        return ( ) => {
+        return () => {
             socketRef.current?.close();
         };
     }, [])
 
-    const sendMessage = (message) => {
+    const sendMessage = (message:string) => {
         if (socketRef.current?.readyState === WebSocket.OPEN) {
             socketRef.current.send(message) 
         }

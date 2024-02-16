@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import re_path
 from .views import SimpleConsumer
+
 websocket_urlpatterns = [
-    path('simple/', SimpleConsumer.as_asgi()),
+    re_path(r'ws/simple/$', SimpleConsumer.as_asgi()),
 ]
