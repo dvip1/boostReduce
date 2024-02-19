@@ -9,7 +9,7 @@
 
 ```pip install -r requirements.txt```
 
-```daphne server.asgi:application```
+```python3 manage.py runserver```
 
 ### Client
 ```cd client```
