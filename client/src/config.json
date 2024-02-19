@@ -1,3 +1,4 @@
 {
+    "webSocketUrl": "ws://localhost:8000/ws/",
     "serverUrl": "http://localhost:8000"
 }

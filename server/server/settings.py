@@ -86,9 +86,8 @@ TEMPLATES = [
         },
     },
 ]
+ASGI_APPLICATION = "server.asgi.application"  # Keep this  
 
-WSGI_APPLICATION = 'server.wsgi.application'
-ASGI_APPLICATION = 'server.wsgi.application'
 
 
 # Database
@@ -96,10 +95,10 @@ ASGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'BoostReduce',  
         'USER': 'root',       
-        'PASSWORD': 'dvip#1234', 
+        'PASSWORD': 'Dvip#1234', 
         'HOST': 'localhost',              
         'PORT': '3306',                  
     }

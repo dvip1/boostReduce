@@ -8,6 +8,7 @@ import IsAuth from "./auth/isAuth";
 import SignOut from "./auth/signout";
 import ProtectedRoute from "./auth/protectedRoute";
 import WebSocketComponent from "./socket/socket";
+import GameComponent from "./socket/game";
 export default function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashBoard />} />
           <Route path="/ws" element={<WebSocketComponent />} />
+          <Route path="/game" element={<GameComponent />} />
         </Route>
       </Routes>
     </BrowserRouter>
