@@ -23,8 +23,7 @@ const SignIn = () => {
             } 
           );
       if (response.status === 200) {
-        // Store the tokens in a secure place (like an HttpOnly cookie)
-        Cookies.set('refreshToken', response.data.refresh, { httpOnly: true });
+        Cookies.set('refreshToken', response.data.refresh);
         Cookies.set('accessToken', response.data.access);
         navigate("/dashboard");
       }

@@ -6,6 +6,8 @@ class GameConsumer(WebsocketConsumer):
     def connect(self):
         try:
             self.accept()
+            print(f"Checking in socket.views.GameConsumer: {self.scope['user']}")
+
             self.send(text_data= json.dumps({
                 "type": "Success",
                 "message": "Connected ✅"
@@ -25,7 +27,7 @@ class GameConsumer(WebsocketConsumer):
                 self.create_game()
         except Exception as e: 
             print(e)
-            self.send(e);
+            self.send(json.dumps(e));
     
     def create_game(self):
         from .models import Game
@@ -36,13 +38,13 @@ class GameConsumer(WebsocketConsumer):
             'type': 'game_created',
             'code': code
         }))
+        print("it's working!")
         
         
         
 class SimpleConsumer(WebsocketConsumer):
     def connect(self):
         try:
-            print(self.scope['user'])
             self.accept()
         except Exception as e:
             print(f"Authentication error: {e}")
