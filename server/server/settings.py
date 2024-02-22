@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',  
     'rest_framework_simplejwt',
-    'channels'
+    'channels',
+    'server',
+    'authentication',
+    'mySockets'
 ]
 
 MIDDLEWARE = [
@@ -57,6 +60,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',  # Adjust for your frontend port
 ]
+
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access the CSRF cookie
@@ -64,13 +68,15 @@ CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access the CSRF cookie
 ROOT_URLCONF = 'server.urls'
 
 ASGI_APPLICATION = "BoostReduce.asgi.application"
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
-
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=12),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30)
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

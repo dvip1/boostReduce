@@ -36,8 +36,10 @@ export default function Game() {
 
   return (
     <>
+    <section className="bg-black h-screen">
       <button onClick={() => createGame()} className="bg-blue-500">
     create game      
-</button>    </>
+</button>   
+</section> </>
   );
 }

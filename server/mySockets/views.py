@@ -1,6 +1,6 @@
 from channels.generic.websocket import WebsocketConsumer
 import json
-
+import django
 
 class GameConsumer(WebsocketConsumer):
     def connect(self):
@@ -25,10 +25,21 @@ class GameConsumer(WebsocketConsumer):
             data= json.loads(text_data)
             if data['type']== 'create_game':
                 self.create_game()
-        except Exception as e: 
-            print(e)
-            self.send(json.dumps(e));
-    
+        except django.db.utils.ProgrammingError as e:
+            self.send(text_data=json.dumps({
+            "type": "error",
+            "message": "Database error: {}".format(str(e)) 
+            }))
+        except Exception as e:
+            print(json.dumps({
+            "type": "error",
+            "message": "An unexpected error occurred: {}".format(str(e))
+            }))
+            self.send(text_data=json.dumps({
+            "type": "error",
+            "message": "An unexpected error occurred: {}".format(str(e))
+            }))   
+
     def create_game(self):
         from .models import Game
         from .utils import generate_game_code

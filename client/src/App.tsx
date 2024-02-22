@@ -20,9 +20,9 @@ export default function App() {
         <Route path="/sign_out" element={<SignOut />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashBoard />} />
-          <Route path="/ws" element={<WebSocketComponent />} />
-          <Route path="/game" element={<GameComponent />} />
         </Route>
+          <Route path="/game" element={<GameComponent />} />
+          <Route path="/ws" element={<WebSocketComponent />} />
       </Routes>
     </BrowserRouter>
   );
