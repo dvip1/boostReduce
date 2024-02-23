@@ -9,6 +9,7 @@ import SignOut from "./auth/signout";
 import ProtectedRoute from "./auth/protectedRoute";
 import WebSocketComponent from "./socket/socket";
 import GameComponent from "./socket/game";
+import Chat from "./socket/chat";
 export default function App() {
   return (
     <BrowserRouter>
@@ -23,6 +24,8 @@ export default function App() {
         </Route>
           <Route path="/game" element={<GameComponent />} />
           <Route path="/ws" element={<WebSocketComponent />} />
+          <Route path="/chat" element={<Chat />} />
+
       </Routes>
     </BrowserRouter>
   );
