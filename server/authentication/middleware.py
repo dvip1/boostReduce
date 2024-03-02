@@ -35,10 +35,3 @@ class JwtAuthMiddleware(BaseMiddleware):
             print(f"Error in JWTAuthMiddleware: {e}")
             scope['user']= AnonymousUser()
         return await super().__call__(scope, receive, send)          
-    
-        # headers = dict(scope['headers'])
-        # if b'cookie' in headers:
-        #     cookies = headers[b'cookie'].decode()
-        #     jwt = cookies.split('JWT ')[-1].split(';')[0]
-        #     scope['user'] = await get_user(jwt)
-        # return await super().__call__(scope, receive, send)
